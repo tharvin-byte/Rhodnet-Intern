@@ -1,0 +1,353 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Newsreader", Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Cinzel", Georgia, serif;
+
+  --color-canvas: #090E0B;
+  --color-canvas-card: #121A15;
+  --color-canvas-border: #223528;
+  --color-text-main: #FAF8F2;
+  --color-text-muted: #8FA596;
+  --color-berkshire-green: #1C3D2F;
+  --color-berkshire-accent: #2A5844;
+  --color-emerald-light: #34D399;
+  --color-gold: #C5A869;
+  --color-gold-light: #E0C895;
+  --color-gold-dark: #8C6F36;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    background-color: #090E0B;
+    color: #FAF8F2;
+  }
+  
+  body {
+    background: radial-gradient(circle at 50% 15%, #132219 0%, #0C1510 40%, #070B09 100%);
+    background-attachment: fixed;
+    color: #FAF8F2;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+}
+
+/* Custom newspaper divider rules */
+.editorial-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #2A4433, transparent);
+}
+
+.vault-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #395240, transparent);
+}
+
+/* Tabular figures for financial tickers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090E0B;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #243B2E;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C5A869;
+}
+
+/* True 3D Atmospheric Wealth Falling Money System */
+.money-rain-viewport {
+  perspective: 1000px;
+  perspective-origin: 50% 25%;
+  transform-style: preserve-3d;
+}
+
+.money-note-container {
+  position: absolute;
+  top: -120px;
+  will-change: transform, opacity;
+  animation: moneyFall3D var(--fall-duration, 16s) linear infinite;
+  animation-delay: var(--fall-delay, 0s);
+  pointer-events: none;
+}
+
+.money-note-sway {
+  will-change: transform;
+  animation: moneySway3D var(--sway-duration, 4.5s) ease-in-out infinite alternate;
+  animation-delay: var(--sway-delay, 0s);
+  transform-style: preserve-3d;
+}
+
+.money-note-tumble-flip {
+  will-change: transform;
+  transform-style: preserve-3d;
+  animation: moneyTumbleFlip var(--tumble-duration, 8s) ease-in-out infinite;
+  animation-delay: var(--tumble-delay, 0s);
+}
+
+.money-note-tumble-rock {
+  will-change: transform;
+  transform-style: preserve-3d;
+  animation: moneyTumbleRock var(--tumble-duration, 6s) ease-in-out infinite alternate;
+  animation-delay: var(--tumble-delay, 0s);
+}
+
+.money-note-tumble-glide {
+  will-change: transform;
+  transform-style: preserve-3d;
+  animation: moneyTumbleGlide var(--tumble-duration, 7s) ease-in-out infinite alternate;
+  animation-delay: var(--tumble-delay, 0s);
+}
+
+.money-card-3d {
+  position: relative;
+  width: 106px;
+  height: 46px;
+  transform-style: preserve-3d;
+}
+
+.money-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.7), 0 4px 8px -2px rgba(0, 0, 0, 0.45);
+}
+
+.money-front {
+  transform: rotateY(0deg);
+}
+
+.money-back {
+  transform: rotateY(180deg);
+}
+
+/* Specular light glint reflecting off currency paper */
+.money-glint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 20%,
+    rgba(226, 206, 159, 0.22) 45%,
+    rgba(255, 255, 255, 0.35) 50%,
+    rgba(226, 206, 159, 0.15) 55%,
+    transparent 80%
+  );
+  pointer-events: none;
+  animation: moneyGlint var(--glint-duration, 4s) ease-in-out infinite alternate;
+  animation-delay: var(--glint-delay, 0s);
+}
+
+@keyframes moneyFall3D {
+  0% {
+    transform: translateY(-130px) translateX(0);
+    opacity: 0;
+  }
+  5% {
+    opacity: var(--target-opacity, 0.6);
+  }
+  92% {
+    opacity: var(--target-opacity, 0.6);
+  }
+  100% {
+    transform: translateY(calc(100vh + 220px)) translateX(var(--drift-x, 35px));
+    opacity: 0;
+  }
+}
+
+@keyframes moneySway3D {
+  0% {
+    transform: translateX(calc(var(--sway-distance, 40px) * -1)) rotateZ(calc(var(--rot-z, 18deg) * -1));
+  }
+  100% {
+    transform: translateX(var(--sway-distance, 40px)) rotateZ(var(--rot-z, 18deg));
+  }
+}
+
+/* Full 3D continuous axial rotation showing both sides */
+@keyframes moneyTumbleFlip {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateZ(0px);
+  }
+  25% {
+    transform: rotateX(75deg) rotateY(90deg) rotateZ(15deg) translateZ(35px);
+  }
+  50% {
+    transform: rotateX(150deg) rotateY(180deg) rotateZ(0deg) translateZ(0px);
+  }
+  75% {
+    transform: rotateX(225deg) rotateY(270deg) rotateZ(-15deg) translateZ(-35px);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(0deg) translateZ(0px);
+  }
+}
+
+/* Deep 3D rocking without full flip */
+@keyframes moneyTumbleRock {
+  0% {
+    transform: rotateX(calc(var(--rot-x, 35deg) * -1)) rotateY(var(--rot-y, 40deg)) translateZ(25px);
+  }
+  50% {
+    transform: rotateX(calc(var(--rot-x, 35deg) * 0.4)) rotateY(calc(var(--rot-y, 40deg) * -0.6)) translateZ(-15px);
+  }
+  100% {
+    transform: rotateX(var(--rot-x, 35deg)) rotateY(calc(var(--rot-y, 40deg) * -1)) translateZ(30px);
+  }
+}
+
+/* Gentle 3D gliding roll */
+@keyframes moneyTumbleGlide {
+  0% {
+    transform: rotateX(20deg) rotateY(-25deg) translateZ(-10px);
+  }
+  100% {
+    transform: rotateX(-25deg) rotateY(30deg) translateZ(20px);
+  }
+}
+
+@keyframes moneyGlint {
+  0% {
+    opacity: 0.05;
+    transform: translateX(-50%) skewX(-20deg);
+  }
+  50% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0.08;
+    transform: translateX(50%) skewX(-20deg);
+  }
+}
+
+/* Card hover lift motion */
+.card-hover-lift {
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover-lift:hover {
+  transform: translateY(-4px);
+  border-color: rgba(197, 168, 105, 0.5);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* Editorial Gold Foil Sheen on Headlines */
+.gold-shimmer-text {
+  background: linear-gradient(
+    105deg,
+    #C5A869 0%,
+    #FAF8F2 25%,
+    #E5D3A8 50%,
+    #FAF8F2 75%,
+    #C5A869 100%
+  );
+  background-size: 250% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: goldShimmer 7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes goldShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 250% 50%;
+  }
+}
+
+/* Staggered Cinematic Text Entrance Animations */
+.animate-text-reveal-1 {
+  animation: textRevealUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+.animate-text-reveal-2 {
+  animation: textRevealUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
+}
+.animate-text-reveal-3 {
+  animation: textRevealUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.32s both;
+}
+.animate-text-reveal-4 {
+  animation: textRevealUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.46s both;
+}
+
+@keyframes textRevealUp {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Interactive Quote Border Glow & Slide */
+.quote-hover-glow {
+  transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.2, 0, 0, 1), padding-left 0.35s ease;
+}
+.quote-hover-glow:hover {
+  border-color: #C5A869;
+  padding-left: 1.25rem;
+  color: #FAF8F2;
+}
+
+/* Stat Number Pulse & Glow on Hover */
+.stat-number-glow {
+  transition: text-shadow 0.3s ease, transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+  display: inline-block;
+}
+.stat-number-glow:hover {
+  text-shadow: 0 0 16px rgba(52, 211, 153, 0.55), 0 0 30px rgba(197, 168, 105, 0.3);
+  transform: scale(1.04);
+}
+
+/* Terminal Cursor Blink in SEC Depository */
+.terminal-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background-color: #34D399;
+  vertical-align: middle;
+  margin-left: 5px;
+  animation: cursorBlink 1s step-start infinite;
+}
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .money-note-container {
+    animation: none !important;
+    opacity: 0.1 !important;
+    transform: translateY(40vh) !important;
+  }
+  .money-note-inner {
+    animation: none !important;
+  }
+  .card-hover-lift:hover {
+    transform: none !important;
+  }
+}
