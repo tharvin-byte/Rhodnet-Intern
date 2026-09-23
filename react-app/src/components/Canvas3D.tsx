@@ -3,7 +3,7 @@ import { SceneManager } from '../three/SceneManager';
 import { HeadphoneModel } from '../three/HeadphoneModel';
 
 interface Canvas3DProps {
-  onSceneReady?: (scene: SceneManager, model: HeadphoneModel) => void;
+  onSceneReady?: (scene: SceneManager, model: HeadphoneModel) => void | (() => void);
   isOrbitActive?: boolean;
 }
 
@@ -24,8 +24,9 @@ export const Canvas3D: React.FC<Canvas3DProps> = ({ onSceneReady, isOrbitActive 
     sceneManagerRef.current = sceneManager;
     headphoneModelRef.current = headphoneModel;
 
+    let cleanupOnSceneReady: void | (() => void);
     if (onSceneReady) {
-      onSceneReady(sceneManager, headphoneModel);
+      cleanupOnSceneReady = onSceneReady(sceneManager, headphoneModel);
     }
 
     // 2. Measure layout AFTER settling to prevent initial aspect ratio distortion
@@ -69,6 +70,9 @@ export const Canvas3D: React.FC<Canvas3DProps> = ({ onSceneReady, isOrbitActive 
     // 4. Full StrictMode Cleanup on unmount
     return () => {
       cancelAnimationFrame(animationFrameId);
+      if (typeof cleanupOnSceneReady === 'function') {
+        cleanupOnSceneReady();
+      }
       window.removeEventListener('resize', handleWindowResize);
       if (resizeObserver) {
         resizeObserver.disconnect();
