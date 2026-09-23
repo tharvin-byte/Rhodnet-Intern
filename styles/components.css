@@ -1,0 +1,331 @@
+/* ==========================================================================
+   Bang & Olufsen - "Pure" UI Components Stylesheet
+   Controls, Scrubber Dock, Audio Equalizer, SVG Leader Lines & Specs Drawer
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Colorway Switcher Pill
+   -------------------------------------------------------------------------- */
+.colorway-switcher {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.colorway-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  background: transparent;
+  border: none;
+  border-radius: 16px;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.70rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.colorway-btn .color-swatch {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.colorway-btn.champagne .color-swatch {
+  background: #d8caa7;
+}
+
+.colorway-btn.anthracite .color-swatch {
+  background: #27272a;
+}
+
+.colorway-btn.active {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--text-pure);
+}
+
+/* --------------------------------------------------------------------------
+   Audio Synthesizer Toggle Button
+   -------------------------------------------------------------------------- */
+.audio-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.70rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.audio-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-pure);
+}
+
+.audio-equalizer {
+  display: flex;
+  align-items: center;
+  gap: 2.5px;
+  height: 10px;
+}
+
+.eq-bar {
+  width: 2px;
+  height: 3px;
+  background: var(--text-secondary);
+  border-radius: 1px;
+  transition: height 0.2s ease;
+}
+
+.audio-toggle-btn.playing {
+  color: var(--accent-gold);
+  border-color: rgba(212, 194, 167, 0.45);
+}
+
+.audio-toggle-btn.playing .eq-bar {
+  background: var(--accent-gold);
+  animation: eqPulse 1.0s infinite alternate ease-in-out;
+}
+
+.audio-toggle-btn.playing .eq-bar:nth-child(1) { animation-delay: 0.1s; }
+.audio-toggle-btn.playing .eq-bar:nth-child(2) { animation-delay: 0.35s; }
+.audio-toggle-btn.playing .eq-bar:nth-child(3) { animation-delay: 0.2s; }
+.audio-toggle-btn.playing .eq-bar:nth-child(4) { animation-delay: 0.45s; }
+
+@keyframes eqPulse {
+  0% { height: 2px; }
+  100% { height: 11px; }
+}
+
+/* --------------------------------------------------------------------------
+   360° Free Interactive Orbit Mode Button
+   -------------------------------------------------------------------------- */
+.orbit-mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.70rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.orbit-mode-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-pure);
+}
+
+.orbit-mode-btn.active {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.18);
+}
+
+.orbit-mode-btn svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+}
+
+/* --------------------------------------------------------------------------
+   Right Vertical Stage Indicator Dots (Product Story Pagination)
+   -------------------------------------------------------------------------- */
+.stage-nav-dots {
+  position: absolute;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 45;
+  pointer-events: auto;
+}
+
+.stage-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage-dot:hover {
+  background: rgba(255, 255, 255, 0.6);
+  transform: scale(1.3);
+}
+
+.stage-dot.active {
+  background: #ffffff;
+  height: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   SVG Leader Lines & Beacon Pulse
+   -------------------------------------------------------------------------- */
+.leader-line {
+  stroke: rgba(255, 255, 255, 0.45);
+  stroke-width: 1.0;
+  stroke-dasharray: 4 3;
+  fill: none;
+}
+
+.ping-ring {
+  animation: pingPulse 1.8s infinite cubic-bezier(0, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+@keyframes pingPulse {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.hotspot-beacon {
+  position: absolute;
+  z-index: 45;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+.hotspot-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f43f5e;
+  box-shadow: 0 0 10px #f43f5e;
+}
+
+/* --------------------------------------------------------------------------
+   Technical Specifications Slide-Over Drawer
+   -------------------------------------------------------------------------- */
+.specs-drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.specs-drawer-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.specs-drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(480px, 92vw);
+  height: 100%;
+  background: #131316;
+  border-left: 1px solid var(--border-glass);
+  padding: 44px 34px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.4s var(--ease-luxury);
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.8);
+}
+
+.specs-drawer-backdrop.open .specs-drawer {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.drawer-header h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-pure);
+  letter-spacing: -0.01em;
+}
+
+.drawer-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.drawer-close-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--text-pure);
+}
+
+.specs-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.spec-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 16px;
+}
+
+.spec-name {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent-gold);
+  margin-bottom: 6px;
+}
+
+.spec-val {
+  font-size: 0.96rem;
+  color: var(--text-pure);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.spec-note {
+  font-size: 0.80rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}

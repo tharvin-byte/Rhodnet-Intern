@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bang & Olufsen — Beoplay H4 2nd Gen / H95 ("Pure")</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./js/vendor/three.module.js",
+        "three/addons/": "./js/vendor/"
+      }
+    }
+  </script>
+</head>
+
+<body>
+
+  <!-- Full-Bleed 3D Landing Page Experience -->
+  <main class="website-card" id="website-card">
+
+    <!-- Top Header Navigation -->
+    <header class="header-nav">
+      <a href="#" class="brand-wrapper" aria-label="Bang & Olufsen Home">
+        <span class="brand-text">BANG & OLUFSEN</span>
+        <svg class="bo-logo-mark" viewBox="0 0 40 38" fill="currentColor">
+          <path
+            d="M18 6h-6v26h6c4.4 0 8-3.6 8-8 0-3-1.7-5.6-4.2-6.9 1.9-1.2 3.2-3.4 3.2-6.1 0-4-3.1-7-7-7zm-2 5h1.8c1.8 0 3.2 1.3 3.2 3s-1.4 3-3.2 3H16v-6zm0 10h2c2.2 0 4 1.8 4 4s-1.8 4-4 4H16v-8z" />
+          <path
+            d="M29.5 20c-4.1 0-7.5 3.4-7.5 7.5s3.4 7.5 7.5 7.5 7.5-3.4 7.5-7.5-3.4-7.5-7.5-7.5zm0 11.5c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z" />
+          <path
+            d="M23.5 12.5c-.8 0-1.5.7-1.5 1.5 0 .5.3.9.7 1.2l-2.2 2.2c-.3-.2-.7-.4-1.2-.4-1.1 0-2 .9-2 2s.9 2 2 2c.6 0 1.1-.3 1.5-.7l2.1 2.1c-.1.2-.2.4-.2.6 0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5c0-.4-.2-.8-.4-1.1l2.2-2.2c.3.2.7.3 1.1.3 1.1 0 2-.9 2-2s-.9-2-2-2c-.5 0-.9.2-1.2.4l-2.1-2.1c.1-.2.2-.5.2-.8 0-.9-.7-1.6-1.5-1.6z" />
+        </svg>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="#headphones" class="active" id="nav-headphones">Headphones</a></li>
+          <li class="nav-item"><a href="#services" id="nav-services">Services</a></li>
+          <li class="nav-item"><a href="#stories" id="nav-stories">Stories</a></li>
+          <li class="nav-item"><a href="#accessories" id="nav-accessories">Accessories</a></li>
+        </ul>
+      </nav>
+
+      <!-- Right Header Controls: Colorway Switcher, Ambient Audio & 360 Orbit -->
+      <div class="header-right-tools">
+        <!-- Dual Colorway Switcher -->
+        <div class="colorway-switcher" title="Select Colorway">
+          <button class="colorway-btn champagne active" data-colorway="champagne">
+            <span class="color-swatch"></span>
+            <span>Sand</span>
+          </button>
+          <button class="colorway-btn anthracite" data-colorway="anthracite">
+            <span class="color-swatch"></span>
+            <span>Black</span>
+          </button>
+        </div>
+
+        <!-- Audio Synthesizer Toggle -->
+        <button class="audio-toggle-btn" id="audio-toggle" title="Toggle Luxury Ambient Soundscape">
+          <div class="audio-equalizer">
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+          </div>
+          <span class="audio-status-text">Audio</span>
+        </button>
+
+        <!-- 360° Free Interactive Orbit Mode Toggle -->
+        <button class="orbit-mode-btn" id="orbit-mode-toggle"
+          title="Toggle 360° Free Interactive Orbit (or drag anytime on 3D scene)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+          </svg>
+          <span class="orbit-status-text">360° Orbit</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Canvas Layer 1: 2D Soundwave Harmonic Frequency Visualizer -->
+    <canvas id="soundwave-canvas"></canvas>
+
+    <!-- Canvas Layer 2: 3D WebGL Three.js Model -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Screen-Space SVG Technical Leader Lines Layer -->
+    <svg id="leader-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+    <!-- ======================================================================
+         STAGE 1: HERO VIEW ("PURE") — 0:00 to 0:02s
+         ====================================================================== -->
+    <section class="stage-overlay stage-hero" id="stage-hero">
+      <div class="hero-typography-layer">
+        <h1 class="title-pure">Pure</h1>
+        <div class="title-superior">SUPERIOR SOUND</div>
+        <div class="title-expression">expression</div>
+      </div>
+
+      <div class="bottom-left-action">
+        <button class="shop-now-btn" id="hero-shop-btn">
+          <span>SHOP NOW</span>
+          <span class="arrow-circle">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M7 17L17 7M17 7H7M17 7V17" />
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <div class="bottom-right-info">
+        <div class="product-name">Beoplay H4 2nd Gen</div>
+        <div class="product-promo-text">Buy a pair of headphones and get a free Raf Simons x Kvadrat headphone bag
+          (while stock lasts).</div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         STAGE 2: ACOUSTIC SOUNDWAVE & ANC — 0:02 to 0:04.5s
+         ====================================================================== -->
+    <section class="stage-overlay stage-anc" id="stage-anc">
+      <div class="anc-content-card">
+        <h2 class="anc-headline">Lose yourself in <span class="neon-silence">silence</span></h2>
+        <p class="anc-p1">An inward-facing microphone listens inside your ear for unwanted sound, which is also
+          eliminated with anti-noise.</p>
+        <p class="anc-p2">Noise cancellation is continuously adjusted at 200 times per second for truly immersive sound,
+          so you're fully tuned in to your music, podcasts, and calls.</p>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         STAGE 3: LIFESTYLE EDITORIAL SLIDE-IN — 0:04.5 to 0:07s
+         ====================================================================== -->
+    <section class="stage-overlay stage-lifestyle" id="stage-lifestyle">
+      <div class="lifestyle-card-inner">
+        <img src="assets/lifestyle_editorial.png" alt="Lifestyle Editorial: Model with Bang & Olufsen Headphones"
+          class="lifestyle-img">
+        <div class="lifestyle-overlay-content">
+          <div class="lifestyle-eyebrow">ACHIEVE SACINGS WITHOUT</div>
+          <div class="lifestyle-btn-group">
+            <button class="shop-now-btn">
+              <span>SHOP NOW</span>
+              <span class="arrow-circle">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M7 17L17 7M17 7H7M17 7V17" />
+                </svg>
+              </span>
+            </button>
+            <button class="learn-more-btn trigger-specs-btn">
+              <span>LEARN MORE</span>
+              <span class="arrow-right">→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         STAGES 4, 5, 6: EXPLODED ANATOMY (Stages A, B, C) — 0:07 to 0:17.5s
+         ====================================================================== -->
+    <section class="stage-overlay stage-exploded" id="stage-exploded">
+      <!-- Left Column Content Lockup -->
+      <div class="exploded-left-column">
+        <div class="exploded-eyebrow" id="exploded-eyebrow">AUDIO QUALITY</div>
+        <h2 class="exploded-heading" id="exploded-heading">Wear all day<br>in total comfort</h2>
+        <p class="exploded-desc" id="exploded-desc">Expertly crafted using premium materials, Beoplay H95 headphones
+          embrace the ear for a luxurious and superior fit.</p>
+        <button class="learn-more-btn trigger-specs-btn" id="exploded-learn-btn">
+          <span>LEARN MORE</span>
+          <span class="arrow-right">→</span>
+        </button>
+
+        <!-- Technical Annotation Card connected to Leader Line -->
+        <div class="annotation-block" id="annotation-block">
+          <div class="annotation-title" id="annotation-title">Earpads</div>
+          <div class="annotation-divider"></div>
+          <div class="annotation-desc" id="annotation-desc">
+            Super soft, pressure-relieving earpads in foamed urethane evenly distribute pressure and increase ear pad
+            contact for a stable fit. Comfort is further enhanced by a larger and deeper ergonomic ear space structure.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Subtle Vertical Stage Pagination Indicator -->
+    <nav class="stage-nav-dots" id="stage-nav-dots" aria-label="Product Sections Navigation">
+      <button class="stage-dot active" data-stage="0" title="Pure Hero"></button>
+      <button class="stage-dot" data-stage="1" title="Soundwave & ANC"></button>
+      <button class="stage-dot" data-stage="2" title="Lifestyle Editorial"></button>
+      <button class="stage-dot" data-stage="3" title="Comfort & Earpads"></button>
+      <button class="stage-dot" data-stage="4" title="Touch & Electronics"></button>
+      <button class="stage-dot" data-stage="5" title="Titanium Acoustic Driver"></button>
+    </nav>
+
+    <!-- Hotspot Beacon Anchor Point -->
+    <div class="hotspot-beacon" id="exploded-beacon">
+      <div class="hotspot-dot"></div>
+    </div>
+
+  </main>
+
+  <!-- ======================================================================
+       TECHNICAL SPECIFICATIONS SLIDE-OVER DRAWER MODAL
+       ====================================================================== -->
+  <aside class="specs-drawer-backdrop" id="specs-drawer-backdrop">
+    <div class="specs-drawer">
+      <div class="drawer-header">
+        <h3>Technical Specifications</h3>
+        <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close specifications drawer">×</button>
+      </div>
+
+      <div class="specs-grid">
+        <div class="spec-item">
+          <div class="spec-name">Sound</div>
+          <div class="spec-val">Electro-dynamic Titanium Driver, 40mm diameter</div>
+          <div class="spec-note">Frequency Range: 10 – 40,000 Hz. Custom acoustic tuning with Neodymium magnets.</div>
+        </div>
+
+        <div class="spec-item">
+          <div class="spec-name">Noise Cancellation</div>
+          <div class="spec-val">Adaptive Active Noise Cancellation (ANC)</div>
+          <div class="spec-note">Digital MEMS microphones adjust 200 times per second for acoustic isolation.</div>
+        </div>
+
+        <div class="spec-item">
+          <div class="spec-name">Materials</div>
+          <div class="spec-val">Lambskin Leather, Foamed Urethane, Anodized Aluminum</div>
+          <div class="spec-note">Radial spun touch surface, stainless steel telescopic sliders, braided cord.</div>
+        </div>
+
+        <div class="spec-item">
+          <div class="spec-name">Battery & Playtime</div>
+          <div class="spec-val">Up to 38 hours with Bluetooth and ANC</div>
+          <div class="spec-note">Up to 50 hours with Bluetooth only. USB-C fast charging (2 hours full charge).</div>
+        </div>
+
+        <div class="spec-item">
+          <div class="spec-name">Connectivity</div>
+          <div class="spec-val">Bluetooth 5.3 & Hi-Res Wireless</div>
+          <div class="spec-note">Codecs: LDAC (990 kbps), AAC, aptX™ Adaptive. Multipoint connection for 2 devices.
+          </div>
+        </div>
+
+        <div class="spec-item">
+          <div class="spec-name">Dimensions & Weight</div>
+          <div class="spec-val">185 W x 165 H x 80 D mm — 282 g</div>
+          <div class="spec-note">Ergonomic memory foam cushion with contoured ear space chamber.</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
