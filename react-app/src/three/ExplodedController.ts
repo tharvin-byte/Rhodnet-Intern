@@ -113,9 +113,9 @@ export class ExplodedController {
       const height = typeof window !== 'undefined' ? window.innerHeight : 900;
       leaderLine = {
         x1: width * 0.56,
-        y1: height * 0.50,
+        y1: height * 0.68,
         x2: width * 0.56,
-        y2: height * 0.68,
+        y2: height * 0.50,
         opacity: Math.min(1, easeT * 2)
       };
 

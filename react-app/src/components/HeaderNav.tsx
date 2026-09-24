@@ -20,8 +20,9 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   onNavClick
 }) => {
   return (
-    <header className="absolute top-0 left-0 w-full h-[76px] px-6 sm:px-11 flex items-center justify-between z-40 pointer-events-auto">
-      <a href="#" className="flex items-center gap-3 text-white no-underline">
+    <header className="absolute top-0 left-0 right-0 w-full h-[76px] z-40 pointer-events-auto flex items-center justify-center">
+      <div className="w-full max-w-[1360px] px-6 sm:px-10 flex items-center justify-between">
+        <a href="#" className="flex items-center gap-3 text-white no-underline">
         <span className="text-[10.5px] font-bold tracking-[0.16em] uppercase">BANG & OLUFSEN</span>
         <svg className="h-7 w-auto fill-white" viewBox="0 0 40 38">
           <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 4.8 2.7 8.9 6.7 11L6.7 38h11.6V23.5c4-2.1 6.7-6.2 6.7-11C25 5.6 19.4 0 12.5 0zm0 18.2c-3.1 0-5.7-2.6-5.7-5.7s2.6-5.7 5.7-5.7 5.7 2.6 5.7 5.7-2.6 5.7-5.7 5.7zM27.5 0C20.6 0 15 5.6 15 12.5c0 4.8 2.7 8.9 6.7 11L21.7 38h11.6V23.5c4-2.1 6.7-6.2 6.7-11C40 5.6 34.4 0 27.5 0zm0 18.2c-3.1 0-5.7-2.6-5.7-5.7s2.6-5.7 5.7-5.7 5.7 2.6 5.7 5.7-2.6 5.7-5.7 5.7z" />
@@ -119,6 +120,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           </svg>
           360° Orbit
         </button>
+      </div>
       </div>
     </header>
   );
