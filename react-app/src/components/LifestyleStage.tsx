@@ -26,15 +26,15 @@ export const LifestyleStage: React.FC<LifestyleStageProps> = ({ slideY, opacity,
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
 
-        <div className="absolute bottom-12 left-6 sm:left-14 z-30 flex flex-col items-start gap-4">
+        <div className="absolute bottom-14 sm:bottom-20 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center text-center gap-4 w-full px-6">
           <div className="text-white/80 text-[11px] font-semibold tracking-[0.25em] uppercase">
-            ACHIEVE SACINGS WITHOUT
+            ACHIEVE SAVINGS WITHOUT
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center gap-3">
             <button
               onClick={onOpenSpecs}
               style={{ pointerEvents: isInteractive ? 'auto' : 'none' }}
-              className="bg-white text-black text-[11.5px] font-bold tracking-[0.12em] uppercase px-7 py-3.5 rounded-[6px] flex items-center gap-2 hover:bg-neutral-200 transition-colors cursor-pointer"
+              className="bg-white text-black text-[11.5px] font-bold tracking-[0.12em] uppercase px-7 py-3.5 rounded-[6px] flex items-center gap-2 hover:bg-neutral-200 transition-colors cursor-pointer shadow-lg"
             >
               SHOP NOW
               <svg className="w-3 h-3 stroke-current fill-none stroke-[2.5]" viewBox="0 0 24 24">
@@ -45,7 +45,7 @@ export const LifestyleStage: React.FC<LifestyleStageProps> = ({ slideY, opacity,
             <button
               onClick={onOpenSpecs}
               style={{ pointerEvents: isInteractive ? 'auto' : 'none' }}
-              className="border border-white/30 text-white text-[11.5px] font-bold tracking-[0.12em] uppercase px-6 py-3.5 rounded-[6px] hover:bg-white/10 transition-colors flex items-center gap-2 cursor-pointer"
+              className="border border-white/40 bg-[#121212]/80 backdrop-blur-md text-white text-[11.5px] font-bold tracking-[0.12em] uppercase px-6 py-3.5 rounded-[6px] hover:bg-white/10 transition-colors flex items-center gap-2 cursor-pointer shadow-lg"
             >
               LEARN MORE
               <span>→</span>
