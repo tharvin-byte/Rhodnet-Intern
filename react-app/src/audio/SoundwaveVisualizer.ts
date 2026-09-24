@@ -75,8 +75,19 @@ export class SoundwaveVisualizer {
     }
   }
 
+  clearCanvas() {
+    if (!this.ctx) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.scale(dpr, dpr);
+  }
+
   setStageAlpha(alpha: number) {
     this.stageAlpha = Math.max(0, Math.min(1, alpha));
+    if (this.stageAlpha <= 0.001) {
+      this.clearCanvas();
+    }
   }
 
   setAudioPlaying(playing: boolean) {
@@ -85,9 +96,11 @@ export class SoundwaveVisualizer {
   }
 
   update(freqData: Uint8Array | null) {
-    if (!this.ctx || this.stageAlpha <= 0.001) return;
+    if (!this.ctx) return;
 
-    this.ctx.clearRect(0, 0, this.width, this.height);
+    this.clearCanvas();
+
+    if (this.stageAlpha <= 0.001) return;
 
     this.intensity += (this.targetIntensity - this.intensity) * 0.05;
     this.time += 0.02 * this.intensity;

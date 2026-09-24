@@ -94,9 +94,14 @@ export const App: React.FC = () => {
       controller.update(delta);
 
       if (visualizerRef.current && audioManagerRef.current) {
+        const inWaveStage = controller.progress >= 0.14 && controller.progress < 0.28;
+        const waveAlpha = inWaveStage
+          ? Math.min(1, Math.sin(((controller.progress - 0.14) / 0.14) * Math.PI) * 1.6)
+          : 0.0;
+        visualizerRef.current.setStageAlpha(waveAlpha);
+
         const freqData = audioManagerRef.current.getFrequencyData();
         visualizerRef.current.update(freqData);
-        visualizerRef.current.setStageAlpha(controller.progress >= 0.14 && controller.progress < 0.28 ? 1.0 : 0.0);
       }
     };
     animId = requestAnimationFrame(loop);
@@ -183,7 +188,10 @@ export const App: React.FC = () => {
       />
 
       {/* 2. Audio Visualizer Canvas */}
-      <SoundwaveCanvas onVisualizerReady={handleVisualizerReady} />
+      <SoundwaveCanvas
+        opacity={stageState.ancOpacity}
+        onVisualizerReady={handleVisualizerReady}
+      />
 
       {/* 3. Three.js Canvas3D Scene */}
       <Canvas3D onSceneReady={handleSceneReady} isOrbitActive={isOrbitActive} />
