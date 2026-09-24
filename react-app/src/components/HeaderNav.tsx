@@ -40,7 +40,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
         </li>
         <li>
           <button
-            onClick={() => onNavClick(0.20)}
+            onClick={() => onNavClick(0.22)}
             className="text-white text-[12.5px] font-normal tracking-wide opacity-85 hover:opacity-100 transition-opacity bg-transparent border-0 cursor-pointer p-0"
           >
             Services
@@ -48,7 +48,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
         </li>
         <li>
           <button
-            onClick={() => onNavClick(0.35)}
+            onClick={() => onNavClick(0.37)}
             className="text-white text-[12.5px] font-normal tracking-wide opacity-85 hover:opacity-100 transition-opacity bg-transparent border-0 cursor-pointer p-0"
           >
             Stories

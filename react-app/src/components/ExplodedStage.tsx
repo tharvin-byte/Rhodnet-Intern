@@ -40,23 +40,25 @@ export const ExplodedStage: React.FC<ExplodedStageProps> = ({
 
         <button
           onClick={onOpenSpecs}
-          className="border border-white/20 text-white text-[11px] font-bold tracking-[0.14em] uppercase px-5 py-3 rounded-[6px] hover:bg-white/10 transition-colors flex items-center gap-2 pointer-events-auto cursor-pointer mb-8"
+          className="border border-white/20 text-white text-[11px] font-bold tracking-[0.14em] uppercase px-5 py-2.5 rounded-[4px] hover:bg-white/10 transition-colors flex items-center gap-2 pointer-events-auto cursor-pointer mb-10"
         >
           LEARN MORE
           <span>→</span>
         </button>
 
-        {/* Technical Annotation Card */}
+        {/* Technical Annotation (Clean editorial layout matching reference video) */}
         {annotationTitle && (
-          <div className="w-full bg-white/5 border border-white/10 backdrop-blur-md p-5 rounded-xl text-left pointer-events-auto">
-            <div className="text-white text-sm font-bold tracking-wide mb-2 flex items-center justify-between">
-              <span>{annotationTitle}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#f43f5e]" />
-            </div>
-            <div className="w-full h-px bg-white/10 mb-3" />
-            <div className="text-[#8c8c90] text-xs font-normal leading-relaxed">
+          <div className="w-full max-w-[360px] text-left pointer-events-auto">
+            <h3 className="text-white text-base font-bold tracking-tight mb-2">
+              {annotationTitle}
+            </h3>
+            <div
+              id="annotation-line-anchor"
+              className="w-full h-[1px] bg-white/20 mb-3.5"
+            />
+            <p className="text-[#8c8c90] text-[13px] font-normal leading-relaxed">
               {annotationDesc}
-            </div>
+            </p>
           </div>
         )}
       </div>

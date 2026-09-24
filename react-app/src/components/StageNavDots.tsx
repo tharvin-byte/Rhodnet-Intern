@@ -5,7 +5,7 @@ interface StageNavDotsProps {
   onSelectStage: (progress: number) => void;
 }
 
-const STAGE_PROGRESS_MAP = [0.0, 0.20, 0.35, 0.50, 0.66, 0.80];
+const STAGE_PROGRESS_MAP = [0.0, 0.22, 0.37, 0.52, 0.67, 0.82];
 
 export const StageNavDots: React.FC<StageNavDotsProps> = ({ stageIndex, onSelectStage }) => {
   return (

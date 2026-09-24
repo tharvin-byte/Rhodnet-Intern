@@ -94,9 +94,9 @@ export const App: React.FC = () => {
       controller.update(delta);
 
       if (visualizerRef.current && audioManagerRef.current) {
-        const inWaveStage = controller.progress >= 0.14 && controller.progress < 0.28;
+        const inWaveStage = controller.progress >= 0.15 && controller.progress < 0.30;
         const waveAlpha = inWaveStage
-          ? Math.min(1, Math.sin(((controller.progress - 0.14) / 0.14) * Math.PI) * 1.6)
+          ? Math.min(1, Math.sin(((controller.progress - 0.15) / 0.15) * Math.PI) * 1.6)
           : 0.0;
         visualizerRef.current.setStageAlpha(waveAlpha);
 
@@ -116,12 +116,27 @@ export const App: React.FC = () => {
     visualizerRef.current = visualizer;
   };
 
-  // Scroll and touch event listeners
+  // Scroll and touch event listeners with calibrated 1.8vh per section
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       if (!explodedControllerRef.current) return;
-      const delta = e.deltaY * 0.00015;
-      explodedControllerRef.current.setProgress(explodedControllerRef.current.targetProgress + delta);
+
+      // Normalize deltaMode: 0 = pixels, 1 = lines (~24px per line), 2 = pages (~window.innerHeight)
+      let deltaPx = e.deltaY;
+      if (e.deltaMode === 1) {
+        deltaPx *= 24;
+      } else if (e.deltaMode === 2) {
+        deltaPx *= window.innerHeight;
+      }
+
+      // Total scroll height calibrated to exactly 12.0x viewport heights.
+      // Each of the 6 major storytelling stages takes exactly 1.8x viewport heights (1.8 vh).
+      const totalScrollHeight = window.innerHeight * 12.0;
+      const delta = deltaPx / totalScrollHeight;
+
+      explodedControllerRef.current.setProgress(
+        explodedControllerRef.current.targetProgress + delta
+      );
     };
 
     let touchStartY = 0;
@@ -134,10 +149,14 @@ export const App: React.FC = () => {
     const handleTouchMove = (e: TouchEvent) => {
       if (!explodedControllerRef.current) return;
       if (e.touches && e.touches.length > 0) {
-        const deltaY = touchStartY - e.touches[0].clientY;
+        const deltaPx = touchStartY - e.touches[0].clientY;
         touchStartY = e.touches[0].clientY;
-        const delta = deltaY * 0.00035;
-        explodedControllerRef.current.setProgress(explodedControllerRef.current.targetProgress + delta);
+        // Calibrate touch swipe to 7.5x viewport height for natural finger swipe
+        const touchScrollHeight = window.innerHeight * 7.5;
+        const delta = deltaPx / touchScrollHeight;
+        explodedControllerRef.current.setProgress(
+          explodedControllerRef.current.targetProgress + delta
+        );
       }
     };
 

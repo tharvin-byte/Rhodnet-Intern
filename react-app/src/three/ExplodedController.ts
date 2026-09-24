@@ -62,7 +62,9 @@ export class ExplodedController {
       }
     }
 
-    this.progress += (this.targetProgress - this.progress) * 0.08;
+    // Calibrated delta-time exponential smoothing (half-life ~0.14s, settle ~0.35s, equivalent to GSAP scrub: 0.6)
+    const scrubDamping = 1.0 - Math.exp(-Math.min(delta, 0.1) * 8.5);
+    this.progress += (this.targetProgress - this.progress) * scrubDamping;
     this.evaluateStage(this.progress);
   }
 
@@ -86,21 +88,21 @@ export class ExplodedController {
     let leaderLine: StageState['leaderLine'] = null;
     let stageIndex = 0;
 
-    // SECTION 1: HERO ("PURE") — 0:00 to 0:02s (p: 0.00 – 0.14)
-    if (p < 0.14) {
+    // SECTION 1: HERO ("PURE") — p: 0.00 – 0.15 (1.8 vh scroll)
+    if (p < 0.15) {
       stageIndex = 0;
-      const t = p / 0.14;
-      heroOpacity = Math.max(0, 1 - t * 1.5);
+      const t = p / 0.15;
+      heroOpacity = t < 0.5 ? 1.0 : Math.max(0, 1.0 - (t - 0.5) / 0.5);
 
       const rotY = t * 0.12;
       config.modelPos.set(0, -0.04, 0);
       config.modelRot.set(0.06, rotY, 0);
       explodedAmount = 0.0;
 
-    // SECTION 2: SOUNDWAVE & ANC — 0:02 to 0:04.5s (p: 0.14 – 0.28)
-    } else if (p < 0.28) {
+    // SECTION 2: SOUNDWAVE & ANC — p: 0.15 – 0.30 (1.8 vh scroll)
+    } else if (p < 0.30) {
       stageIndex = 1;
-      const t = (p - 0.14) / 0.14;
+      const t = (p - 0.15) / 0.15;
       const easeT = Math.sin(t * Math.PI);
       ancOpacity = Math.min(1, easeT * 1.6);
 
@@ -119,14 +121,14 @@ export class ExplodedController {
         opacity: Math.min(1, easeT * 2)
       };
 
-    // SECTION 3: LIFESTYLE EDITORIAL — 0:04.5 to 0:07s (p: 0.28 – 0.42)
-    } else if (p < 0.42) {
+    // SECTION 3: LIFESTYLE EDITORIAL — p: 0.30 – 0.45 (1.8 vh scroll)
+    } else if (p < 0.45) {
       stageIndex = 2;
-      const t = (p - 0.28) / 0.14;
-      if (t < 0.3) {
-        lifestyleSlideY = (1.0 - (t / 0.3)) * 100;
-      } else if (t > 0.7) {
-        lifestyleSlideY = -((t - 0.7) / 0.3) * 100;
+      const t = (p - 0.30) / 0.15;
+      if (t < 0.25) {
+        lifestyleSlideY = (1.0 - (t / 0.25)) * 100;
+      } else if (t > 0.75) {
+        lifestyleSlideY = -((t - 0.75) / 0.25) * 100;
       } else {
         lifestyleSlideY = 0;
       }
@@ -140,10 +142,10 @@ export class ExplodedController {
       config.modelRot.set(0.06 * (1.0 - t), rotY, 0);
       explodedAmount = 0.0;
 
-    // SECTION 4: EXPLODED STAGE A (Cushion) — 0:07 to 0:10.5s (p: 0.42 – 0.58)
-    } else if (p < 0.58) {
+    // SECTION 4: EXPLODED STAGE A (Cushion) — p: 0.45 – 0.60 (1.8 vh scroll)
+    } else if (p < 0.60) {
       stageIndex = 3;
-      const t = (p - 0.42) / 0.16;
+      const t = (p - 0.45) / 0.15;
       explodedOpacity = Math.min(1, t * 2.0);
 
       eyebrow = 'AUDIO QUALITY';
@@ -159,10 +161,10 @@ export class ExplodedController {
 
       leaderLine = this.computeExplodedLeaderLine(this.model.layerCushion, 'cushion');
 
-    // SECTION 5: EXPLODED STAGE B (Touch & PCB) — 0:10.5 to 0:14s (p: 0.58 – 0.74)
-    } else if (p < 0.74) {
+    // SECTION 5: EXPLODED STAGE B (Touch & PCB) — p: 0.60 – 0.75 (1.8 vh scroll)
+    } else if (p < 0.75) {
       stageIndex = 4;
-      const t = (p - 0.58) / 0.16;
+      const t = (p - 0.60) / 0.15;
       explodedOpacity = 1.0;
 
       eyebrow = 'AUDIO QUALITY';
@@ -178,10 +180,10 @@ export class ExplodedController {
 
       leaderLine = this.computeExplodedLeaderLine(this.model.layerPCB, 'pcb');
 
-    // SECTION 6: EXPLODED STAGE C (Titanium Driver) — 0:14 to 0:17.5s (p: 0.74 – 0.88)
-    } else if (p < 0.88) {
+    // SECTION 6: EXPLODED STAGE C (Titanium Driver) — p: 0.75 – 0.90 (1.8 vh scroll)
+    } else if (p < 0.90) {
       stageIndex = 5;
-      const t = (p - 0.74) / 0.14;
+      const t = (p - 0.75) / 0.15;
       explodedOpacity = 1.0;
 
       eyebrow = 'ACHIEVE SACINGS WITHOUT';
@@ -197,10 +199,10 @@ export class ExplodedController {
 
       leaderLine = this.computeExplodedLeaderLine(this.model.layerDriver, 'driver');
 
-    // SECTION 7: REASSEMBLY & LOOP FINALE — 0:17.5 to 0:20s (p: 0.88 – 1.00)
+    // SECTION 7: REASSEMBLY & LOOP FINALE — p: 0.90 – 1.00 (1.2 vh scroll)
     } else {
       stageIndex = 6;
-      const t = (p - 0.88) / 0.12;
+      const t = (p - 0.90) / 0.10;
       const easeT = Math.sin(t * Math.PI * 0.5);
 
       explodedAmount = Math.max(0, 1.0 - easeT * 1.3);
@@ -217,13 +219,13 @@ export class ExplodedController {
 
     // Blend right cup angle for profile viewing
     let rightCupRotY = -0.08;
-    if (p >= 0.38 && p < 0.50) {
-      const t = (p - 0.38) / 0.12;
+    if (p >= 0.40 && p < 0.50) {
+      const t = (p - 0.40) / 0.10;
       rightCupRotY = -0.08 * (1.0 - t);
-    } else if (p >= 0.50 && p < 0.88) {
+    } else if (p >= 0.50 && p < 0.90) {
       rightCupRotY = 0.0;
-    } else if (p >= 0.88) {
-      const t = (p - 0.88) / 0.12;
+    } else if (p >= 0.90) {
+      const t = (p - 0.90) / 0.10;
       rightCupRotY = -0.08 * Math.sin(t * Math.PI * 0.5);
     }
     if (this.model && this.model.rightCupRig) {
@@ -277,8 +279,17 @@ export class ExplodedController {
     const beaconX = (projected.x * 0.5 + 0.5) * width;
     const beaconY = (-(projected.y * 0.5) + 0.5) * height;
 
-    const startX = width * 0.24;
-    const startY = height * 0.65;
+    let startX = width * 0.28;
+    let startY = height * 0.58;
+
+    if (typeof document !== 'undefined') {
+      const anchorEl = document.getElementById('annotation-line-anchor');
+      if (anchorEl) {
+        const rect = anchorEl.getBoundingClientRect();
+        startX = rect.right;
+        startY = rect.top + rect.height * 0.5;
+      }
+    }
 
     return {
       x1: startX,

@@ -38,7 +38,8 @@ export const LeaderLinesSvg: React.FC<LeaderLinesSvgProps> = ({ line }) => {
           fill="none"
           stroke="#f43f5e"
           strokeWidth="1.2"
-          className="animate-ping origin-center"
+          style={{ transformOrigin: `${line.x2}px ${line.y2}px` }}
+          className="animate-ping"
         />
       </g>
     </svg>
