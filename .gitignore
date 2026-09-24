@@ -28,6 +28,25 @@ Thumbs.db
 *.sln
 *.sw?
 
+# Video media and source captures
+*.mp4
+*.mov
+*.webm
+*.avi
+videoplayback.mp4
+
+# Specifications, internal documentation, and prompt notes
+BNO_Pure_Antigravity_Build_Specification.md
+docs/
+
+# Reference images and verification screenshots
+stage1-references/
+react-app/stage3-verification/
+react-app/stage4-verification/
+
+# Root assets (app uses react-app/public/assets/)
+assets/
+
 # Temporary test/media dumps
 video_frames_dump/
 scratch/
