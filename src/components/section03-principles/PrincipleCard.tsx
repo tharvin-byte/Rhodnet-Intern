@@ -1,20 +1,34 @@
 import React from 'react';
-import { useStory } from '../../context/StoryContext';
+import { useStory } from '../../hooks/useStory';
 import { principlesList } from '../../data/principlesData';
 import type { PrincipleItem } from '../../types/principles';
 
-export const PrincipleCard: React.FC = () => {
+const MOAT_DEFENSES = [
+  { num: '1', title: 'Pricing Power', desc: "Raise prices without losing unit volume (See's Candies, Apple)." },
+  { num: '2', title: 'Brand Prestige', desc: 'Habitual consumer affection that competitors cannot replicate (Coca-Cola).' },
+  { num: '3', title: 'High Switching Costs', desc: "Painful, risky, or expensive for customers to switch (Moody's, BofA)." },
+  { num: '4', title: 'Structural Cost Moat', desc: 'Lowest operating expense ratio in the industry (GEICO).' },
+] as const;
+
+const FLYWHEEL_STEPS = [
+  { step: '01', title: 'BUY', desc: 'Wonderful enterprise at fair price' },
+  { step: '02', title: 'HOLD', desc: 'Decades, not quarterly ticks' },
+  { step: '03', title: 'REINVEST', desc: 'Retain earnings tax-deferred' },
+  { step: '04', title: 'COMPOUND', desc: 'Exponential capital growth' },
+] as const;
+
+export const PrincipleCard: React.FC = React.memo(() => {
   const { expandedPrincipleId, setExpandedPrincipleId } = useStory();
 
-  const handleCardClick = (id: string) => {
-    setExpandedPrincipleId(expandedPrincipleId === id ? null : id);
-  };
+  // Active principle item or default to first
+  const activeId = expandedPrincipleId || 'circle-of-competence';
+  const activePrinciple = principlesList.find((p) => p.id === activeId) || principlesList[0];
 
   const renderVisual = (principle: PrincipleItem) => {
     switch (principle.visualType) {
       case 'margin':
         return (
-          <div className="p-4 sm:p-6 bg-[#0E1712] rounded border border-[#23382B] space-y-3">
+          <div className="py-4 border-y border-[#1E3024] space-y-3">
             <div className="text-xs font-mono tracking-wider text-[#8FA596] uppercase font-semibold">
               Valuation Disconnect Visualizer
             </div>
@@ -23,47 +37,65 @@ export const PrincipleCard: React.FC = () => {
                 <span className="font-bold text-[#34D399]">ESTIMATED INTRINSIC VALUE</span>
                 <span className="text-[#34D399] font-bold">$100 / Share</span>
               </div>
-              <div className="h-6 w-full bg-[#18281E] rounded relative overflow-hidden flex items-center px-3 border border-[#233E2E]">
+              <div className="h-6 w-full bg-[#14261B] rounded-xs relative overflow-hidden flex items-center px-3 border border-[#234230]">
                 <div className="absolute left-0 top-0 bottom-0 bg-[#34D399]/20 w-full" />
                 <span className="relative z-10 text-[11px] font-mono text-[#FAF8F2] font-semibold">
-                  Full Conservative Business Value (Discounted Cash Flows)
+                  Full Conservative Business Value (Discounted Future Cash Flows)
                 </span>
               </div>
 
-              <div className="flex items-center justify-between text-xs font-mono pt-2">
+              <div className="flex items-center justify-between text-xs font-mono pt-1">
                 <span className="font-bold text-[#C5A869]">MARKET PRICE PAID</span>
                 <span className="text-[#C5A869] font-bold">$55 / Share</span>
               </div>
-              <div className="h-6 w-[55%] bg-gradient-to-r from-[#8C6F36] to-[#C5A869] rounded flex items-center px-3 text-[11px] font-mono text-[#090E0B] font-bold shadow-sm">
+              <div className="h-6 w-[55%] bg-gradient-to-r from-[#8C6F36] to-[#C5A869] rounded-xs flex items-center px-3 text-[11px] font-mono text-[#090E0B] font-bold shadow-sm transition-all duration-700 ease-out">
                 55% Market Price
               </div>
             </div>
 
-            <div className="pt-2.5 flex items-center justify-between text-xs font-mono text-[#FAF8F2] font-bold border-t border-[#1C2F22]">
+            <div className="pt-2 flex items-center justify-between text-xs font-mono text-[#FAF8F2] font-bold">
               <span className="text-[#8FA596]">MARGIN OF SAFETY CUSHION:</span>
-              <span className="bg-[#172D20] border border-[#2E593E] px-2.5 py-0.5 rounded text-[#34D399]">
+              <span className="px-2.5 py-0.5 rounded bg-[#162D20] text-[#34D399] border border-[#2B543B]">
                 +45% Downside Buffer
               </span>
             </div>
           </div>
         );
 
+      case 'moat':
+        return (
+          <div className="py-4 border-y border-[#1E3024] space-y-2.5">
+            <div className="text-xs font-mono tracking-wider text-[#8FA596] uppercase font-semibold">
+              The Castle Moat Defenses
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono">
+              {MOAT_DEFENSES.map((m) => (
+                <div
+                  key={m.num}
+                  className="p-3 bg-[#111F17] rounded-xs border border-[#1E3526] hover:border-[#C5A869]/50 text-[#FAF8F2] hover-border-glint transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  <span className="text-[#34D399] font-bold block mb-0.5">{m.num}. {m.title}</span>
+                  {m.desc}
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
       case 'timeline':
         return (
-          <div className="p-4 sm:p-5 bg-[#0E1712] rounded border border-[#23382B]">
-            <div className="text-xs font-mono tracking-wider text-[#8FA596] uppercase font-semibold mb-3">
-              The Long-Term Flywheel
+          <div className="py-4 border-y border-[#1E3024] space-y-2.5">
+            <div className="text-xs font-mono tracking-wider text-[#8FA596] uppercase font-semibold">
+              The Compounding Flywheel
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center">
-              {[
-                { step: '01', title: 'BUY', desc: 'Wonderful business at fair price' },
-                { step: '02', title: 'HOLD', desc: 'Decades, not quarters' },
-                { step: '03', title: 'REINVEST', desc: 'Retain earnings tax-free' },
-                { step: '04', title: 'COMPOUND', desc: 'Exponential capital growth' },
-              ].map((item) => (
-                <div key={item.step} className="p-3 rounded bg-[#132219] border border-[#233B2C] hover:border-[#C5A869]/40 transition-colors">
-                  <div className="text-[10px] font-mono text-[#C5A869] font-bold">{item.step}</div>
-                  <div className="font-serif font-bold text-sm text-[#FAF8F2] mt-0.5">{item.title}</div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center font-mono">
+              {FLYWHEEL_STEPS.map((item) => (
+                <div
+                  key={item.step}
+                  className="p-3 bg-[#111F17] rounded-xs border border-[#1E3526] hover:border-[#34D399]/60 transition-all duration-300 hover:scale-105 group"
+                >
+                  <div className="text-[10px] text-[#C5A869] font-bold group-hover:scale-110 transition-transform">{item.step}</div>
+                  <div className="font-serif font-bold text-sm text-[#FAF8F2] mt-0.5 group-hover:text-[#34D399] transition-colors">{item.title}</div>
                   <div className="text-[10px] text-[#8FA596] mt-1 leading-tight">{item.desc}</div>
                 </div>
               ))}
@@ -71,128 +103,124 @@ export const PrincipleCard: React.FC = () => {
           </div>
         );
 
-      case 'moat':
+      default:
         return (
-          <div className="p-4 sm:p-5 bg-[#0E1712] rounded border border-[#23382B]">
-            <div className="text-xs font-mono tracking-wider text-[#8FA596] uppercase font-semibold mb-3">
-              The 5 Castle Moat Defenses
+          <div className="py-4 border-y border-[#1E3024] space-y-2">
+            <div className="text-xs font-mono tracking-wider text-[#8FA596] uppercase font-semibold">
+              Cognitive Boundary Model
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-              <div className="p-2.5 bg-[#132219] rounded border border-[#233B2C] font-mono text-[#FAF8F2]">
-                <strong className="text-[#34D399]">1. Pricing Power:</strong> Raise prices without losing volume (Why I bought See's Candies).
-              </div>
-              <div className="p-2.5 bg-[#132219] rounded border border-[#233B2C] font-mono text-[#FAF8F2]">
-                <strong className="text-[#34D399]">2. Brand Prestige:</strong> Habitual consumer loyalty (Why I bought Apple, Coca-Cola).
-              </div>
-              <div className="p-2.5 bg-[#132219] rounded border border-[#233B2C] font-mono text-[#FAF8F2]">
-                <strong className="text-[#34D399]">3. High Switching Costs:</strong> Severe friction to replace (Why I own Moody's).
-              </div>
-              <div className="p-2.5 bg-[#132219] rounded border border-[#233B2C] font-mono text-[#FAF8F2]">
-                <strong className="text-[#34D399]">4. Low-Cost Advantage:</strong> Structural cost moat rivals cannot touch (Why I love GEICO).
-              </div>
-            </div>
+            <p className="text-xs text-[#9EB0A3] font-sans leading-relaxed">
+              If an investment requires complex predictions or tech forecasting, I toss it straight into my <strong className="text-[#FAF8F2]">"Too Hard"</strong> tray. I only play games where I know I have the odds heavily in my favor.
+            </p>
           </div>
         );
-
-      default:
-        return null;
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 pb-12">
-      {principlesList.map((p) => {
-        const isExpanded = expandedPrincipleId === p.id;
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Boxless 2-Column Split Dossier */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        {/* Left Column: Interactive Principle Index Rail */}
+        <div className="lg:col-span-4 space-y-2">
+          <div className="font-mono text-xs text-[#8FA596] uppercase tracking-widest pb-3 border-b border-[#1E3024] mb-3">
+            SELECT A MENTAL MODEL
+          </div>
 
-        return (
-          <div
-            key={p.id}
-            className={`transition-all duration-300 rounded border ${
-              isExpanded
-                ? 'bg-[#111B15] border-[#C5A869]/60 shadow-[0_8px_30px_rgba(0,0,0,0.5)]'
-                : 'bg-[#101813]/85 border-[#1E3024] hover:border-[#C5A869]/40 cursor-pointer card-hover-lift'
-            }`}
-          >
-            {/* Clickable Header Bar */}
-            <button
-              onClick={() => handleCardClick(p.id)}
-              className="w-full p-6 sm:p-7 text-left flex items-start sm:items-center justify-between gap-4 focus:outline-none cursor-pointer"
-            >
-              <div className="flex items-start sm:items-center space-x-4">
-                <span className="font-mono text-2xl sm:text-3xl font-light text-[#C5A869] tracking-tight">
-                  {p.number}
-                </span>
+          <div className="space-y-1.5">
+            {principlesList.map((p) => {
+              const isSelected = activePrinciple.id === p.id;
 
-                <div>
-                  <h3 className="font-serif text-xl sm:text-2xl font-normal text-[#FAF8F2]">
-                    {p.title}
-                  </h3>
-                  <div className="font-serif text-sm italic text-[#8FA596] mt-0.5">
-                    {p.tagline}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-3 pt-1 sm:pt-0">
-                <span className="hidden sm:inline font-mono text-xs uppercase tracking-widest text-[#8FA596]">
-                  {isExpanded ? 'COLLAPSE' : 'EXPAND'}
-                </span>
-                <span
-                  className={`w-7 h-7 rounded-full flex items-center justify-center font-mono text-sm border transition-transform duration-300 ${
-                    isExpanded
-                      ? 'rotate-180 bg-[#C5A869] text-[#090E0B] border-[#C5A869]'
-                      : 'bg-[#16251C] text-[#8FA596] border-[#253D2E]'
+              return (
+                <button
+                  key={p.id}
+                  onClick={() => setExpandedPrincipleId(p.id)}
+                  className={`w-full text-left p-3.5 rounded-sm transition-all duration-200 flex items-center justify-between group cursor-pointer relative ${
+                    isSelected
+                      ? 'bg-gradient-to-r from-[#172B20] to-transparent border-l-2 border-[#C5A869] text-[#FAF8F2] translate-x-1 shadow-xs'
+                      : 'hover:bg-[#121E17]/60 text-[#8FA596] hover:text-[#FAF8F2] hover:translate-x-0.5 border-l-2 border-transparent'
                   }`}
                 >
-                  ↓
-                </span>
-              </div>
-            </button>
-
-            {/* Expandable Body */}
-            {isExpanded && (
-              <div className="px-6 pb-7 sm:px-8 sm:pb-8 pt-2 border-t border-[#1C2F22] space-y-6 animate-fadeIn">
-                <p className="text-sm sm:text-base text-[#B0C0B4] leading-relaxed font-sans">
-                  {p.summary}
-                </p>
-
-                {/* Core Rule Callout */}
-                <div className="p-4 rounded bg-[#14231A] border-l-3 border-[#C5A869] text-xs sm:text-sm font-serif italic text-[#FAF8F2]">
-                  <strong className="font-mono not-italic uppercase text-[11px] text-[#34D399] block mb-1">
-                    MY GOLDEN RULE:
-                  </strong>
-                  “{p.coreRule}”
-                </div>
-
-                {/* Custom Visual if applicable */}
-                {renderVisual(p)}
-
-                {/* Granular Breakdown */}
-                <div className="space-y-2.5 pt-2">
-                  <div className="text-xs font-mono uppercase tracking-wider text-[#8FA596] font-semibold">
-                    HOW CHARLIE AND I APPLY THIS:
+                  <div className="flex items-center space-x-3">
+                    <span
+                      className={`font-mono text-sm font-bold ${
+                        isSelected ? 'text-[#C5A869]' : 'text-[#4A6352] group-hover:text-[#C5A869]'
+                      }`}
+                    >
+                      {p.number}
+                    </span>
+                    <span className="font-serif text-base font-normal tracking-wide">
+                      {p.title}
+                    </span>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    {p.breakdown.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="p-3.5 rounded bg-[#0E1712] border border-[#213527] space-y-1 hover:border-[#C5A869]/40 transition-colors"
-                      >
-                        <div className="font-serif font-bold text-sm text-[#C5A869]">
-                          {item.label}
-                        </div>
-                        <div className="text-xs text-[#8FA596] leading-snug font-sans">
-                          {item.description}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
+
+                  {isSelected && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse" />
+                  )}
+                </button>
+              );
+            })}
           </div>
-        );
-      })}
+        </div>
+
+        {/* Right Column: Active Spotlight Dossier with Fluid Entrance */}
+        <div className="lg:col-span-8 pt-1 min-h-[360px]">
+          <div
+            key={activePrinciple.id}
+            className="space-y-6 animate-text-reveal-1"
+          >
+            {/* Active Model Header */}
+            <div className="space-y-1.5">
+              <div className="flex items-center space-x-2 font-mono text-xs text-[#C5A869] font-bold tracking-widest uppercase">
+                <span>PRINCIPLE {activePrinciple.number}</span>
+                <span className="text-[#3A5242]">•</span>
+                <span className="text-[#8FA596] italic font-serif lowercase">"{activePrinciple.tagline}"</span>
+              </div>
+
+              <h3 className="font-serif text-3xl sm:text-4xl font-light text-[#FAF8F2] tracking-tight">
+                {activePrinciple.title}
+              </h3>
+            </div>
+
+            {/* Golden Rule Callout */}
+            <div className="border-l-2 border-[#C5A869] pl-4 py-1 text-sm sm:text-base font-serif italic text-[#FAF8F2] leading-relaxed">
+              “{activePrinciple.coreRule}”
+            </div>
+
+            {/* Narrative Summary */}
+            <p className="text-xs sm:text-sm text-[#9EB0A3] leading-relaxed font-sans">
+              {activePrinciple.summary}
+            </p>
+
+            {/* Custom Visual (Margin, Moat, Timeline, Circle) */}
+            {renderVisual(activePrinciple)}
+
+            {/* Application Breakdown Pills */}
+            <div className="space-y-2 pt-1">
+              <div className="font-mono text-[11px] text-[#8FA596] uppercase tracking-wider font-semibold">
+                How Charlie and I Apply This:
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {activePrinciple.breakdown.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3 bg-[#0F1A14]/70 border-l border-[#2B4736] hover:border-[#C5A869] space-y-1 transition-colors duration-200"
+                  >
+                    <div className="font-serif font-bold text-xs text-[#C5A869]">
+                      {item.label}
+                    </div>
+                    <div className="text-[11px] text-[#8FA596] leading-snug font-sans">
+                      {item.description}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
-};
+});
+
+PrincipleCard.displayName = 'PrincipleCard';

@@ -20,19 +20,28 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
     font-family: var(--font-sans);
     background-color: #090E0B;
     color: #FAF8F2;
   }
   
   body {
-    background: radial-gradient(circle at 50% 15%, #132219 0%, #0C1510 40%, #070B09 100%);
-    background-attachment: fixed;
+    background-color: #070B09;
     color: #FAF8F2;
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(circle at 50% 15%, #132219 0%, #0C1510 40%, #070B09 100%);
+    pointer-events: none;
+    transform: translateZ(0);
   }
 }
 
@@ -76,6 +85,7 @@
   perspective: 1000px;
   perspective-origin: 50% 25%;
   transform-style: preserve-3d;
+  contain: layout paint;
 }
 
 .money-note-container {
@@ -85,6 +95,7 @@
   animation: moneyFall3D var(--fall-duration, 16s) linear infinite;
   animation-delay: var(--fall-delay, 0s);
   pointer-events: none;
+  contain: layout style;
 }
 
 .money-note-sway {
@@ -267,6 +278,8 @@
   background-clip: text;
   animation: goldShimmer 7s linear infinite;
   display: inline-block;
+  padding: 0.12em 0.15em 0.12em 0;
+  margin: -0.12em -0.15em -0.12em 0;
 }
 
 @keyframes goldShimmer {
@@ -338,6 +351,90 @@
   50% { opacity: 0; }
 }
 
+/* Kinetic Conduit Continuous Energy Flow */
+@keyframes conduitEnergyFlow {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-conduit-energy {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(28, 61, 47, 0.4) 20%,
+    rgba(197, 168, 105, 0.95) 50%,
+    rgba(52, 211, 153, 0.9) 60%,
+    rgba(28, 61, 47, 0.4) 80%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: conduitEnergyFlow 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Radar Pulse for Active Milestone Nodes */
+@keyframes radarPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(197, 168, 105, 0.6);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(197, 168, 105, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(197, 168, 105, 0);
+  }
+}
+
+.animate-radar-pulse {
+  animation: radarPulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Card 3D Perspective Container */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+/* Traveling Border Glint */
+@keyframes borderGlint {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.hover-border-glint {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-border-glint::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(197, 168, 105, 0.8), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.hover-border-glint:hover::after {
+  animation: borderGlint 1.2s ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .money-note-container {
     animation: none !important;
@@ -349,5 +446,12 @@
   }
   .card-hover-lift:hover {
     transform: none !important;
+  }
+  .animate-conduit-energy {
+    animation: none !important;
+    background: #C5A869 !important;
+  }
+  .animate-radar-pulse {
+    animation: none !important;
   }
 }

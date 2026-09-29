@@ -1,66 +1,129 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { whoAmIMilestones } from '../../data/timelineData';
+import { useInView } from '../../hooks/useInView';
 
-export const StoryTimeline: React.FC = () => {
+export const StoryTimeline: React.FC = React.memo(() => {
+  const [activeId, setActiveId] = useState<string>('origins');
+  const { ref: timelineRef, isInView: timelineInView } = useInView<HTMLDivElement>({ threshold: 0.1 });
+
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Section Header */}
-      <div className="text-center mb-16 space-y-3">
-        <span className="font-mono text-xs tracking-widest uppercase text-[#C5A869] font-bold">
-          MY FORMATIVE YEARS
-        </span>
-        <h2 className="font-serif text-3xl sm:text-4xl font-light text-[#FAF8F2]">
-          Six Milestones That Shaped How I Think
-        </h2>
-        <div className="w-12 h-px bg-[#C5A869] mx-auto mt-4" />
+    <div ref={timelineRef} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20">
+      {/* Section Subhead & Editorial Rule */}
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 pb-6 border-b border-[#1E3024]">
+        <div>
+          <div className="flex items-center space-x-2">
+            <span className="font-mono text-xs tracking-widest uppercase text-[#C5A869] font-bold">
+              01 / CHRONOLOGY
+            </span>
+            <span className="text-[#3A5242]">•</span>
+            <span className="font-mono text-xs text-[#8FA596] tracking-wide uppercase">
+              TURNING POINTS
+            </span>
+          </div>
+          <h2 className="font-serif text-3xl sm:text-4xl font-light text-[#FAF8F2] mt-1.5">
+            The Four Formative Turning Points
+          </h2>
+        </div>
+        <div className="font-mono text-xs text-[#8FA596]">
+          1930 — PRESENT · OMAHA, NEBRASKA
+        </div>
       </div>
 
-      {/* Vertical Timeline Track */}
-      <div className="relative border-l border-[#22382A] ml-4 sm:ml-32 md:ml-40 space-y-12 pb-8">
-        {whoAmIMilestones.map((item, index) => (
-          <div key={item.id} className="relative pl-6 sm:pl-10 group">
-            {/* Year Stamp on Left (Desktop) */}
-            <div className="hidden sm:block absolute -left-32 md:-left-40 top-1 text-right w-24 md:w-32 pr-4 font-mono text-xs text-[#7A9181] group-hover:text-[#C5A869] font-semibold transition-colors">
-              {item.year || `STAGE 0${index + 1}`}
-            </div>
+      {/* Asymmetrical Editorial Chronology (Pure Tailwind CSS Transitions) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-12 pt-10">
+        {whoAmIMilestones.map((item, idx) => {
+          const isActive = activeId === item.id;
 
-            {/* Timeline Bullet Marker with Pulse on Hover */}
-            <div className="absolute -left-[6px] top-2 w-3 h-3 rounded-full bg-[#0E1712] border-2 border-[#34D399] group-hover:bg-[#C5A869] group-hover:border-[#C5A869] group-hover:scale-125 transition-all duration-300 shadow-sm" />
+          return (
+            <div
+              key={item.id}
+              onMouseEnter={() => setActiveId(item.id)}
+              onClick={() => setActiveId(item.id)}
+              className="relative group cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1.5"
+              style={{
+                transitionDelay: `${idx * 60}ms`,
+              }}
+            >
+              {/* Subtle Ambient Glow Behind Active Item */}
+              <div
+                className={`absolute -inset-4 rounded-2xl transition-opacity duration-500 pointer-events-none ${
+                  isActive
+                    ? 'opacity-100 bg-radial from-[#C5A869]/15 via-[#1C3D2F]/10 to-transparent'
+                    : 'opacity-0 group-hover:opacity-50 bg-radial from-[#C5A869]/5 to-transparent'
+                }`}
+              />
 
-            {/* Content Card with Smooth Motion Lift */}
-            <div className="bg-[#111B15]/85 backdrop-blur-sm p-6 sm:p-8 rounded border border-[#203426] hover:border-[#C5A869]/50 card-hover-lift transition-all duration-300 shadow-lg">
-              {/* Top Tag & Mobile Year */}
-              <div className="flex items-center justify-between gap-2 mb-2.5">
-                <span className="text-[10px] font-mono tracking-widest uppercase font-bold text-[#34D399] bg-[#16291E] border border-[#234230] px-2.5 py-0.5 rounded">
-                  {item.tag}
-                </span>
-                <span className="sm:hidden font-mono text-[11px] text-[#7A9181] font-semibold">
-                  {item.year}
-                </span>
-              </div>
+              <div className="relative z-10 flex items-start space-x-5">
+                {/* Typographic Epoch Stamp with Radar Pulse Ring */}
+                <div className="shrink-0 flex flex-col items-center relative">
+                  <span
+                    className={`relative z-10 font-serif text-4xl sm:text-5xl font-light transition-all duration-300 select-none ${
+                      isActive
+                        ? 'text-[#C5A869] font-normal scale-105'
+                        : 'text-[#3E5C48] group-hover:text-[#C5A869]'
+                    }`}
+                  >
+                    {item.epoch}
+                  </span>
 
-              <h3 className="font-serif text-xl sm:text-2xl font-normal text-[#FAF8F2] mb-1 group-hover:text-[#C5A869] transition-colors">
-                {item.title}
-              </h3>
+                  {isActive && (
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-[#C5A869]/30 animate-radar-pulse pointer-events-none" />
+                  )}
 
-              <div className="text-xs uppercase tracking-wider font-mono text-[#8FA596] mb-4">
-                {item.subtitle}
-              </div>
-
-              <p className="text-sm sm:text-base text-[#B0C0B4] leading-relaxed font-sans mb-4">
-                {item.description}
-              </p>
-
-              {item.detailQuote && (
-                <div className="pt-3 border-t border-[#1C2F22] flex items-start space-x-2 text-xs font-serif italic text-[#C5A869] quote-hover-glow cursor-default">
-                  <span className="text-lg leading-none text-[#34D399]">“</span>
-                  <span>{item.detailQuote}</span>
+                  {/* Animated Connecting Vertical Spine */}
+                  <div
+                    className={`w-px h-16 sm:h-20 transition-all duration-700 ease-out mt-2 origin-top ${
+                      timelineInView ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
+                    } ${
+                      isActive
+                        ? 'bg-gradient-to-b from-[#C5A869] via-[#34D399] to-transparent shadow-[0_0_8px_#C5A869]'
+                        : 'bg-[#1E3024] group-hover:bg-[#C5A869]/40'
+                    }`}
+                  />
                 </div>
-              )}
+
+                {/* Editorial Content Block */}
+                <div className="space-y-2 pt-1">
+                  <div className="flex items-center space-x-2.5">
+                    <span className="font-mono text-[10px] tracking-widest uppercase font-bold text-[#34D399]">
+                      {item.tag}
+                    </span>
+                    <span className="text-[#3A5242]">•</span>
+                    <span className="font-mono text-xs text-[#8FA596]">
+                      {item.year}
+                    </span>
+                  </div>
+
+                  <h3
+                    className={`font-serif text-xl sm:text-2xl transition-colors duration-300 leading-snug ${
+                      isActive ? 'text-[#FAF8F2]' : 'text-[#D0DDD3] group-hover:text-[#FAF8F2]'
+                    }`}
+                  >
+                    {item.title}
+                  </h3>
+
+                  <div className="text-xs uppercase tracking-wider font-mono text-[#C5A869]/90">
+                    {item.subtitle}
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-[#9EB0A3] leading-relaxed font-sans pt-1">
+                    {item.description}
+                  </p>
+
+                  {item.detailQuote && (
+                    <div className="pt-2 flex items-start space-x-2 text-xs font-serif italic text-[#C5A869]/90 border-l border-[#2F4D38] pl-3 mt-3">
+                      <span className="text-sm leading-none text-[#34D399]">“</span>
+                      <span>{item.detailQuote}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
-};
+});
+
+StoryTimeline.displayName = 'StoryTimeline';

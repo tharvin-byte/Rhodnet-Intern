@@ -1,7 +1,5 @@
 import type {
   PortfolioHolding,
-  PortfolioChange,
-  OperatingSubsidiary,
   LiquidityMetrics,
   PortfolioOverviewMetrics,
 } from '../types/portfolio';
@@ -176,113 +174,6 @@ export const portfolioHoldings: PortfolioHolding[] = [
     annualDividendMillions: 0,
     thesisSummary: 'DaVita provides life-sustaining dialysis care to hundreds of thousands of kidney patients across America. It’s an essential healthcare service with recurring, non-cyclical demand and immense scale.',
     rank: 10,
-  },
-];
-
-export const portfolioChanges: PortfolioChange[] = [
-  {
-    id: 'change-1',
-    company: 'Apple Inc.',
-    ticker: 'AAPL',
-    action: 'TRIMMED',
-    period: '2024 – 2025',
-    sharesOrValue: 'Trimmed ~600M Shares (~$100B+ realized)',
-    rationale: 'I trimmed our Apple position purely for tax and risk-concentration reasons. With federal corporate capital gains tax rates historically low, taking profits into Treasury bills made sense for our shareholders. Apple remains our largest equity holding by a mile.',
-  },
-  {
-    id: 'change-2',
-    company: 'Bank of America',
-    ticker: 'BAC',
-    action: 'TRIMMED',
-    period: 'Summer–Fall 2024 & 2025',
-    sharesOrValue: 'Trimmed below 10% ownership threshold',
-    rationale: 'I decided to trim our stake below the 10% regulatory threshold. It reduces regulatory red tape and frees up capital for our Treasury bill fortress.',
-  },
-  {
-    id: 'change-3',
-    company: 'Chubb Limited',
-    ticker: 'CB',
-    action: 'ADDED',
-    period: 'Disclosed Mid-2024 / Held into 2026',
-    sharesOrValue: '27.0M Shares (~$8.6B Value)',
-    rationale: 'We spent months quietly accumulating shares of Chubb with confidential SEC approval. Evan Greenberg’s insurance culture matches Berkshire’s DNA perfectly.',
-  },
-  {
-    id: 'change-4',
-    company: 'Occidental Petroleum',
-    ticker: 'OXY',
-    action: 'INCREASED',
-    period: '2023 – 2025 Opportunistic Purchases',
-    sharesOrValue: 'Expanded to ~28.8% common ownership',
-    rationale: 'Whenever the price pulled back, Charlie and I bought more common stock. We have regulatory clearance to acquire up to 50% of the company.',
-  },
-  {
-    id: 'change-5',
-    company: 'Paramount Global',
-    ticker: 'PARA',
-    action: 'SOLD',
-    period: 'Liquidated 2024',
-    sharesOrValue: '100% Position Exited at a Loss',
-    rationale: 'I was 100% responsible for the Paramount decision. I sold the entire position and lost quite a bit of money. When I make a mistake, I don’t fool around—I cut our losses and learn.',
-  },
-];
-
-export const operatingSubsidiaries: OperatingSubsidiary[] = [
-  {
-    id: 'sub-1',
-    name: 'GEICO Auto Insurance',
-    category: 'Insurance',
-    acquiredYear: 1996,
-    description: 'My first love in insurance. I visited their Washington office on a Saturday in 1951 and had a four-hour conversation with Lorimer Davidson. Today, GEICO’s direct model provides tens of billions in low-cost float.',
-    highlightMetric: '$40B+ Annual Premiums Written',
-  },
-  {
-    id: 'sub-2',
-    name: 'BNSF Railway',
-    category: 'Railroad',
-    acquiredYear: 2010,
-    description: 'We bought the railroad in 2010. It’s the circulatory system of the American economy. If it moves in the Western United States, it likely rides on BNSF tracks.',
-    highlightMetric: '32,500 Route Miles across 28 States',
-  },
-  {
-    id: 'sub-3',
-    name: 'Berkshire Hathaway Energy (BHE)',
-    category: 'Energy & Utilities',
-    acquiredYear: 2000,
-    description: 'Greg Abel and his team have built an energy titan. We generate and deliver electricity and natural gas to millions of homes, and we reinvest billions into renewables.',
-    highlightMetric: '12M+ Direct Energy Customers',
-  },
-  {
-    id: 'sub-4',
-    name: 'Precision Castparts Corp.',
-    category: 'Manufacturing',
-    acquiredYear: 2016,
-    description: 'We manufacture the high-stress structural castings and airframe parts inside jet engines. When you fly on a commercial airplane, you’re flying on Precision Castparts components.',
-    highlightMetric: 'Supplying 100% of major jet engine platforms',
-  },
-  {
-    id: 'sub-5',
-    name: "See's Candies",
-    category: 'Service & Retail',
-    acquiredYear: 1972,
-    description: 'The prototype of my dream business. Charlie and I bought it in 1972 for $25 million. It has sent over $2 billion in pretax earnings to Omaha, which we used to buy other great businesses.',
-    highlightMetric: '8,000%+ Cumulative Cash-on-Cost',
-  },
-  {
-    id: 'sub-6',
-    name: 'NetJets',
-    category: 'Service & Retail',
-    acquiredYear: 1998,
-    description: 'Rich Santulli created a wonderful service. I bought my first fractional jet in 1986 and loved it so much we bought the entire company in 1998.',
-    highlightMetric: '900+ Private Aircraft in Operation',
-  },
-  {
-    id: 'sub-7',
-    name: 'Dairy Queen',
-    category: 'Service & Retail',
-    acquiredYear: 1998,
-    description: 'I’ve loved Dairy Queen sundaes and Dilly Bars since I was a boy in Omaha. With over 7,000 stores globally, it’s an enduring slice of Americana.',
-    highlightMetric: '7,000+ Locations Worldwide',
   },
 ];
 

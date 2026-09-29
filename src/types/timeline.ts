@@ -1,6 +1,7 @@
 export interface WhoAmIMilestone {
   id: string;
   year?: string;
+  epoch: string;
   tag: string;
   title: string;
   subtitle: string;

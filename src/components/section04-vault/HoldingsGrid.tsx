@@ -1,139 +1,237 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { portfolioHoldings } from '../../data/portfolioData';
 import type { PortfolioHolding } from '../../types/portfolio';
+import { useInView } from '../../hooks/useInView';
 
-export const HoldingsGrid: React.FC = () => {
-  const [selectedHolding, setSelectedHolding] = useState<PortfolioHolding | null>(null);
+export const HoldingsGrid: React.FC = React.memo(() => {
+  const [selectedHoldingId, setSelectedHoldingId] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState<boolean>(false);
+  const { ref: gridRef, isInView: gridInView } = useInView<HTMLDivElement>({ threshold: 0.1 });
+
+  // Top 5 conviction anchors represent >58% of public equity capital
+  const displayedHoldings = useMemo(
+    () => (showAll ? portfolioHoldings : portfolioHoldings.slice(0, 5)),
+    [showAll]
+  );
+
+  const toggleThesis = useCallback((id: string) => {
+    setSelectedHoldingId((prev) => (prev === id ? null : id));
+  }, []);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-8 border-b border-[#2B3037] pb-4">
+    <div ref={gridRef} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      {/* Section Header & Mode Toggle */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-[#1E3024] mb-6">
         <div>
-          <span className="font-mono text-xs text-[#B39255] tracking-widest uppercase font-semibold">
-            DETAILED ARCHIVE
-          </span>
-          <h4 className="font-serif text-2xl sm:text-3xl font-light text-[#EDEDE9] mt-0.5">
-            Our Major Common Stock Holdings
+          <div className="flex items-center space-x-2">
+            <span className="font-mono text-xs text-[#C5A869] tracking-widest uppercase font-bold">
+              CONVICTION ASSETS
+            </span>
+            <span className="text-[#3A5242]">•</span>
+            <span className="font-mono text-xs text-[#8FA596] tracking-wide uppercase">
+              HIGH CONCENTRATION DISCIPLINE
+            </span>
+          </div>
+          <h4 className="font-serif text-3xl sm:text-4xl font-light text-[#FAF8F2] mt-1.5">
+            The High-Conviction Equity Ledger
           </h4>
+          <p className="text-xs sm:text-sm font-sans text-[#8FA596] mt-1">
+            Over 58% of Berkshire's public stock portfolio is concentrated in just five companies.
+          </p>
         </div>
-        <div className="text-xs font-mono text-[#9CA3AF]">
-          Click any card to read my personal investment thesis
+
+        {/* View Toggle Pill */}
+        <div className="flex items-center space-x-1 p-1 rounded-full bg-[#111C15] border border-[#233B2B] shrink-0 self-start md:self-end shadow-md">
+          <button
+            onClick={() => setShowAll(false)}
+            className={`px-4 py-1.5 rounded-full font-mono text-xs transition-all duration-300 cursor-pointer ${
+              !showAll
+                ? 'bg-[#1C3D2F] border border-[#34D399]/40 text-[#FAF8F2] font-semibold shadow-xs scale-105'
+                : 'text-[#8FA596] hover:text-[#FAF8F2]'
+            }`}
+          >
+            Top 5 Anchors
+          </button>
+          <button
+            onClick={() => setShowAll(true)}
+            className={`px-4 py-1.5 rounded-full font-mono text-xs transition-all duration-300 cursor-pointer ${
+              showAll
+                ? 'bg-[#1C3D2F] border border-[#34D399]/40 text-[#FAF8F2] font-semibold shadow-xs scale-105'
+                : 'text-[#8FA596] hover:text-[#FAF8F2]'
+            }`}
+          >
+            All 10 Holdings
+          </button>
         </div>
       </div>
 
-      {/* Grid of Company Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {portfolioHoldings.map((h) => {
-          const isSelected = selectedHolding?.id === h.id;
-          const isGain = h.gainPercentage >= 0;
+      {/* Boxless Table/Ledger Spread */}
+      <div className="w-full">
+        {/* Ledger Column Headers (Desktop) */}
+        <div className="hidden lg:grid grid-cols-12 gap-4 pb-3 border-b border-[#1E3024] font-mono text-[11px] text-[#7A9181] uppercase tracking-wider">
+          <div className="col-span-1">Rank</div>
+          <div className="col-span-4">Company &amp; Sector</div>
+          <div className="col-span-2 text-right">Market Value</div>
+          <div className="col-span-2 text-right">Weight</div>
+          <div className="col-span-1 text-right">Dividends</div>
+          <div className="col-span-1 text-right">Return</div>
+          <div className="col-span-1 text-right">Thesis</div>
+        </div>
 
-          return (
-            <div
-              key={h.id}
-              onClick={() => setSelectedHolding(isSelected ? null : h)}
-              className={`p-6 rounded bg-[#16191D]/90 backdrop-blur-xs border transition-all duration-200 cursor-pointer flex flex-col justify-between card-hover-lift ${
-                isSelected
-                  ? 'border-[#B39255] bg-[#1A1E24] shadow-md ring-1 ring-[#B39255]/40'
-                  : 'border-[#2B3037] hover:border-[#B39255]/50'
-              }`}
-            >
-              {/* Card Header */}
-              <div>
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <div>
-                    <span className="font-mono text-xs text-[#B39255] font-bold tracking-wider">
-                      {h.ticker}
-                    </span>
-                    <h5 className="font-serif text-xl font-semibold text-[#EDEDE9] mt-0.5">
-                      {h.name}
-                    </h5>
+        {/* Ledger Rows */}
+        <div className="divide-y divide-[#1A2C21]">
+          {displayedHoldings.map((h: PortfolioHolding, idx: number) => {
+            const isSelected = selectedHoldingId === h.id;
+            const isGain = h.gainPercentage >= 0;
+
+            return (
+              <div key={h.id} className="transition-colors">
+                {/* Main Interactive Row with Magnetic Hover Displacement */}
+                <div
+                  onClick={() => toggleThesis(h.id)}
+                  className={`py-4 px-2 sm:px-3 -mx-2 sm:-mx-3 rounded-sm transition-all duration-200 cursor-pointer flex flex-col lg:grid lg:grid-cols-12 gap-2 lg:gap-4 items-start lg:items-center hover:translate-x-1.5 hover:shadow-[inset_3px_0_0_#34D399] ${
+                    isSelected
+                      ? 'bg-[#132219]/90 shadow-[inset_3px_0_0_#C5A869]'
+                      : 'hover:bg-[#111C15]/70'
+                  }`}
+                  style={{
+                    animationDelay: `${idx * 40}ms`,
+                  }}
+                >
+                  {/* Rank + Company & Sector */}
+                  <div className="col-span-5 flex items-center space-x-3 w-full lg:w-auto justify-between lg:justify-start">
+                    <div className="flex items-center space-x-3">
+                      <span className="font-serif text-lg sm:text-xl font-light text-[#C5A869] w-7 select-none">
+                        {h.rank < 10 ? `0${h.rank}` : h.rank}
+                      </span>
+                      <div>
+                        <div className="flex items-center space-x-2">
+                          <span className="font-serif text-base sm:text-lg font-normal text-[#FAF8F2] group-hover:text-[#C5A869] transition-colors">
+                            {h.name}
+                          </span>
+                          <span className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-[#18281E] border border-[#2A4433] text-[#C5A869] font-bold">
+                            {h.ticker}
+                          </span>
+                        </div>
+                        <div className="text-[11px] font-mono text-[#8FA596] mt-0.5 flex items-center space-x-2">
+                          <span>{h.sector}</span>
+                          <span>•</span>
+                          <span>Held since {h.sinceYear}</span>
+                          <span>•</span>
+                          <span className="text-[#34D399]">{h.berkshireOwnershipPercentage}% owned</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Mobile Only: Value and Return Badge */}
+                    <div className="lg:hidden text-right">
+                      <div className="font-serif font-bold text-base text-[#FAF8F2]">
+                        ${h.marketValueBillions}B
+                      </div>
+                      <div className={`font-mono text-xs ${isGain ? 'text-[#34D399]' : 'text-red-400'}`}>
+                        +{h.gainPercentage.toFixed(0)}%
+                      </div>
+                    </div>
                   </div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-[#20252D] text-[#9CA3AF] border border-[#2D333D]">
-                    {h.sector}
-                  </span>
-                </div>
 
-                {/* Metrics Table */}
-                <div className="grid grid-cols-2 gap-y-3 gap-x-4 py-4 my-2 border-y border-[#23272E] text-xs font-mono">
-                  <div>
-                    <div className="text-[10px] text-[#9CA3AF] uppercase">Market Value</div>
-                    <div className="text-sm font-bold text-[#EDEDE9] mt-0.5">
+                  {/* Desktop Columns */}
+                  {/* Market Value */}
+                  <div className="hidden lg:block col-span-2 text-right">
+                    <div className="font-serif text-lg font-bold text-[#FAF8F2]">
                       ${h.marketValueBillions}B
                     </div>
-                  </div>
-
-                  <div>
-                    <div className="text-[10px] text-[#9CA3AF] uppercase">Cost Basis</div>
-                    <div className="text-sm font-bold text-[#9CA3AF] mt-0.5">
-                      ${h.costBasisBillions}B
+                    <div className="font-mono text-[10px] text-[#8FA596]">
+                      {h.shares} shs
                     </div>
                   </div>
 
-                  <div>
-                    <div className="text-[10px] text-[#9CA3AF] uppercase">Portfolio Weight</div>
-                    <div className="text-sm font-bold text-[#B39255] mt-0.5">
+                  {/* Portfolio Weight & Inline Progress Conduit with Animated Fill */}
+                  <div className="hidden lg:block col-span-2 text-right">
+                    <div className="font-mono text-base font-bold text-[#C5A869]">
                       {h.portfolioWeight}%
                     </div>
-                  </div>
-
-                  <div>
-                    <div className="text-[10px] text-[#9CA3AF] uppercase">Our Ownership Stake</div>
-                    <div className="text-sm font-bold text-[#EDEDE9] mt-0.5">
-                      {h.berkshireOwnershipPercentage}%
+                    <div className="w-24 ml-auto h-1.5 bg-[#17271E] rounded-full overflow-hidden mt-1 border border-[#233B2B]">
+                      <div
+                        style={{
+                          width: gridInView ? `${Math.min(100, h.portfolioWeight * 4.2)}%` : '0%',
+                        }}
+                        className="h-full bg-gradient-to-r from-[#1C3D2F] via-[#34D399] to-[#C5A869] transition-all duration-700 ease-out"
+                      />
                     </div>
                   </div>
 
-                  <div>
-                    <div className="text-[10px] text-[#9CA3AF] uppercase">Held Since</div>
-                    <div className="text-sm font-bold text-[#9CA3AF] mt-0.5">
-                      {h.sinceYear}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-[10px] text-[#9CA3AF] uppercase">Annual Dividends</div>
-                    <div className="text-sm font-bold text-emerald-400 mt-0.5">
+                  {/* Annual Dividend Flow */}
+                  <div className="hidden lg:block col-span-1 text-right">
+                    <div className="font-mono text-sm font-bold text-[#34D399]">
                       ${h.annualDividendMillions}M
                     </div>
+                    <div className="font-mono text-[10px] text-[#8FA596]">
+                      / year
+                    </div>
+                  </div>
+
+                  {/* Unrealized Gain */}
+                  <div className="hidden lg:block col-span-1 text-right">
+                    <div
+                      className={`font-mono text-sm font-bold ${
+                        isGain ? 'text-[#34D399]' : 'text-red-400'
+                      }`}
+                    >
+                      {isGain ? `+${h.gainPercentage.toFixed(0)}%` : `${h.gainPercentage.toFixed(0)}%`}
+                    </div>
+                    <div className="font-mono text-[10px] text-[#8FA596]">
+                      return
+                    </div>
+                  </div>
+
+                  {/* Thesis Trigger */}
+                  <div className="hidden lg:flex col-span-1 justify-end">
+                    <span className="font-mono text-xs text-[#C5A869] hover:underline flex items-center space-x-1">
+                      <span>{isSelected ? 'Close' : 'Thesis'}</span>
+                      <span className="text-[10px]">{isSelected ? '▲' : '▼'}</span>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Expanded Thesis Drawer with Pure CSS Accordion */}
+                <div
+                  className={`transition-all duration-300 ease-out overflow-hidden ${
+                    isSelected ? 'max-h-[500px] opacity-100 py-1' : 'max-h-0 opacity-0 py-0'
+                  }`}
+                >
+                  <div className="py-5 px-4 sm:px-6 my-2 bg-[#0E1712] border-l-2 border-[#C5A869] rounded-r-sm space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-[#8FA596] pb-2 border-b border-[#1A2C21]">
+                      <span className="text-[#C5A869] uppercase font-bold tracking-wider">
+                        WARREN'S PERSONAL INVESTMENT THESIS — {h.name}
+                      </span>
+                      <div className="flex items-center space-x-3">
+                        <span>Cost Basis: <strong className="text-[#FAF8F2]">${h.costBasisBillions}B</strong></span>
+                        <span>•</span>
+                        <span>Current Value: <strong className="text-[#FAF8F2]">${h.marketValueBillions}B</strong></span>
+                      </div>
+                    </div>
+
+                    <p className="font-serif text-base sm:text-lg text-[#FAF8F2] italic leading-relaxed">
+                      “{h.thesisSummary}”
+                    </p>
+
+                    <div className="flex flex-wrap items-center gap-3 pt-1 text-[11px] font-mono text-[#8FA596]">
+                      <span className="px-2.5 py-1 rounded bg-[#16271E] border border-[#264433] text-[#34D399]">
+                        Annual Cash Flow: ${h.annualDividendMillions}M in pure cash dividends
+                      </span>
+                      <span className="px-2.5 py-1 rounded bg-[#16271E] border border-[#264433] text-[#C5A869]">
+                        Berkshire Owns: {h.berkshireOwnershipPercentage}% of all outstanding shares
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              {/* Unrealized Gain Badge & Thesis Preview */}
-              <div className="pt-2">
-                <div className="flex items-center justify-between text-xs font-mono mb-2">
-                  <span className="text-[#9CA3AF]">Unrealized Return:</span>
-                  <span
-                    className={`font-bold ${
-                      isGain ? 'text-emerald-400' : 'text-red-400'
-                    }`}
-                  >
-                    {isGain ? `+${h.gainPercentage.toFixed(1)}%` : `${h.gainPercentage.toFixed(1)}%`}
-                  </span>
-                </div>
-
-                {/* Expanded Thesis Detail */}
-                <div
-                  className={`text-xs text-[#9CA3AF] font-sans leading-relaxed pt-2 border-t border-[#23272E] ${
-                    isSelected ? 'block' : 'line-clamp-2'
-                  }`}
-                >
-                  <strong className="font-mono text-[10px] text-[#EDEDE9] block mb-1 uppercase tracking-wider">
-                    My Thesis For Owning This Business:
-                  </strong>
-                  {h.thesisSummary}
-                </div>
-
-                <div className="mt-2 text-right">
-                  <span className="text-[10px] font-mono text-[#B39255] hover:underline">
-                    {isSelected ? 'Less ▲' : 'View Thesis ▼'}
-                  </span>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );
-};
+});
+
+HoldingsGrid.displayName = 'HoldingsGrid';

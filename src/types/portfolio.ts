@@ -17,27 +17,6 @@ export interface PortfolioHolding {
   rank: number;
 }
 
-export type ActionType = 'TRIMMED' | 'ADDED' | 'INCREASED' | 'SOLD';
-
-export interface PortfolioChange {
-  id: string;
-  company: string;
-  ticker: string;
-  action: ActionType;
-  period: string;
-  sharesOrValue: string;
-  rationale: string;
-}
-
-export interface OperatingSubsidiary {
-  id: string;
-  name: string;
-  category: 'Insurance' | 'Railroad' | 'Energy & Utilities' | 'Manufacturing' | 'Service & Retail';
-  acquiredYear: number;
-  description: string;
-  highlightMetric: string;
-}
-
 export interface LiquidityMetrics {
   totalCashAndTreasuriesBillions: number;
   shortTermTreasuryBillsBillions: number;
