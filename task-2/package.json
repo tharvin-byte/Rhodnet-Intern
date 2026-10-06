@@ -1,0 +1,11 @@
+{
+  "name": "bno-pure-experience",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bang & Olufsen Pure - Cinematic 3D interactive experience",
+  "scripts": {
+    "postinstall": "cd react-app && npm install",
+    "build": "cd react-app && npm run build",
+    "preview": "cd react-app && npm run preview"
+  }
+}

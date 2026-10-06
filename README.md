@@ -1,32 +1,20 @@
-# React + TypeScript + Vite
+# Rhodnet Internship Projects
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This repository contains all completed tasks for the Rhodnet Internship.
 
-Currently, two official plugins are available:
+## Repository Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- [**task-1/**](./task-1/) - Task 1 Project
+- [**task-2/**](./task-2/) - Task 2 Project: Bang & Olufsen Interactive 3D Landing Page
+- [**task-3/**](./task-3/) - Task 3 Project: React & TypeScript Shopping Cart Application
 
-## React Compiler
+## Tasks Overview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Task 1
+- Baseline setup and task 1 implementation.
 
-## Expanding the Oxlint configuration
+### Task 2
+- Bang & Olufsen interactive product showcase built with React, Three.js, and Tailwind CSS, featuring exploded view animations and responsive stages.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### Task 3
+- Full-featured Shopping Cart application with product catalog, cart drawer, quantity adjustments, format currency utility, and persistent state via React Context.
